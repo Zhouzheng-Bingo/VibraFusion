@@ -7,7 +7,7 @@ async def startServer(websocket, path):
     i = 0
 
     with open('data.csv', 'a', newline='') as csvfile:
-        fieldnames = ['vol_ch1', 'vol_ch2', 'vol_ch3', 'vol_ch4', 'vol_ch5']
+        fieldnames = ['vol_ch1', 'vol_ch2', 'vol_ch3']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()  # Write header only once
 
@@ -20,12 +20,10 @@ async def startServer(websocket, path):
                 vol_ch1 = float(split_data[0])
                 vol_ch2 = float(split_data[1])
                 vol_ch3 = float(split_data[2])
-                vol_ch4 = float(split_data[3])
-                vol_ch5 = float(split_data[4])
 
-                writer.writerow({'vol_ch1': vol_ch1, 'vol_ch2': vol_ch2, 'vol_ch3': vol_ch3, 'vol_ch4': vol_ch4, 'vol_ch5': vol_ch5})
+                writer.writerow({'vol_ch1': vol_ch1, 'vol_ch2': vol_ch2, 'vol_ch3': vol_ch3})
 
-                greeting = f'server get ch1: {vol_ch1}, ch2: {vol_ch2}, ch3: {vol_ch3}, ch4: {vol_ch4}, ch5: {vol_ch5}'
+                greeting = f'server get ch1: {vol_ch1}, ch2: {vol_ch2}, ch3: {vol_ch3}'
                 print(greeting)
                 await websocket.send(greeting)
             except websockets.ConnectionClosedError:

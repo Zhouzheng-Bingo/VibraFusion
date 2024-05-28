@@ -4,7 +4,7 @@ import websockets
 
 async def getdatalist(num):
     with nidaqmx.Task() as task:
-        task.ai_channels.add_ai_voltage_chan(f"Dev1/ai0:4")
+        task.ai_channels.add_ai_voltage_chan(f"Dev1/ai0:2")
         task.timing.cfg_samp_clk_timing(
             rate=800,
             sample_mode=nidaqmx.constants.AcquisitionType.CONTINUOUS,
@@ -14,7 +14,7 @@ async def getdatalist(num):
         datalist = task.read(number_of_samples_per_channel=num)
         return datalist
 
-# 读五条 ai0, ai1, ai2, ai3, ai4 的值
+# 读三条 ai0, ai1, ai2 的值
 async def send_msg(websocket):
     i = 0
     while True:
@@ -23,7 +23,7 @@ async def send_msg(websocket):
             print(f"-------start!! {i} !!send data to server!----")
             for i in range(100):
                 await websocket.send(
-                    f"{datalist[0][i]}|{datalist[1][i]}|{datalist[2][i]}|{datalist[3][i]}|{datalist[4][i]}"
+                    f"{datalist[0][i]}|{datalist[1][i]}|{datalist[2][i]}"
                 )
                 rec_str = await websocket.recv()
                 print(f"***** 通道的数据已发送 : {rec_str}")
